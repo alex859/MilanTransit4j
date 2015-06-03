@@ -1,0 +1,68 @@
+{
+  "Code": "103640",
+  "Description": "Bisceglie M1",
+  "Location": {
+    "X": 9.1130607628915428,
+    "Y": 45.455698750025441
+  },
+  "CustomerCode": "-33",
+  "Municipality": "Milano",
+  "Address": "Via Ferruccio Parri",
+  "Telephone": "",
+  "Fax": "",
+  "SiteUrl": "",
+  "Email": "",
+  "Category": {
+    "CategoryId": "19",
+    "CategoryName": "Metro",
+    "HasTimeTables": true,
+    "Icons": null
+  },
+  "Details": {
+    "EXTRAINFO1": {
+      "Info": "<img src=\"http://www.atm.it/SiteCollectionImages/handicap.jpg\"><b> Ascensore</b> su via Ferruccio Parri<br>",
+      "DataType": 0
+    }
+  },
+  "Lines": [
+    {
+      "Line": {
+        "LineId": "-1",
+        "OperatorCode": "",
+        "LineCode": "-1",
+        "LineDescription": "Rho Fiera Milano/Bisceglie - Sesto FS",
+        "TransportMode": 0,
+        "Suburban": false
+      },
+      "Direction": "1",
+      "BookletUrl": "http://orari.atm-mi.it/M1_509.pdf",
+      "WaitMessage": null,
+      "JourneyPatternId": "-1|1",
+      "TrafficBulletins": [],
+      "Links": [
+        {
+          "Rel": "timetable",
+          "Href": "http://giromilano.atm.it/TPPortalBackEnd/tpl/stops/-33/timetable/line/-1/dir/1",
+          "Title": null
+        },
+        {
+          "Rel": "journeypattern",
+          "Href": "http://giromilano.atm.it/TPPortalBackEnd/tpl/journeyPatterns/-1%7C1",
+          "Title": null
+        }
+      ]
+    }
+  ],
+  "Links": [
+    {
+      "Rel": "self",
+      "Href": "http://giromilano.atm.it/TPPortalBackEnd/geodata/pois/103640",
+      "Title": null
+    },
+    {
+      "Rel": "linesummary",
+      "Href": "http://giromilano.atm.it/TPPortalBackEnd/tpl/stops/-33/linesummary",
+      "Title": null
+    }
+  ]
+}

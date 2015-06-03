@@ -1,0 +1,414 @@
+{
+  "FromDate": "2014-09-29T00:00:00",
+  "StopCode": "12873-B",
+  "LineCode": "55",
+  "Direction": "0",
+  "TimeSchedules": [
+    {
+      "DayType": {
+        "DayTypeDescription": "Da Lunedì a Venerdì",
+        "Mon": true,
+        "Tue": true,
+        "Wed": true,
+        "Thu": true,
+        "Fri": true,
+        "Sat": false,
+        "Sun": false,
+        "Hol": false
+      },
+      "Schedule": [
+        {
+          "Hour": 3,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 4,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 5,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 6,
+          "ScheduleDetail": "55     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 7,
+          "ScheduleDetail": "04  19  25  32  49     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 8,
+          "ScheduleDetail": "01  08  27  35  50  57     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 9,
+          "ScheduleDetail": "04  21  31  41     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 10,
+          "ScheduleDetail": "01  11  21  41  51     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 11,
+          "ScheduleDetail": "01  21  31  41     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 12,
+          "ScheduleDetail": "01  11  21  39  50     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 13,
+          "ScheduleDetail": "01  21  35     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 14,
+          "ScheduleDetail": "00  16  27  39  50     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 15,
+          "ScheduleDetail": "02  20  31  41  58     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 16,
+          "ScheduleDetail": "08  18  38  46  53     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 17,
+          "ScheduleDetail": "00  20  29  43  50  56     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 18,
+          "ScheduleDetail": "03  17  26  35  52     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 19,
+          "ScheduleDetail": "02  12     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 20,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 21,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 22,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 23,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 0,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 1,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 2,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        }
+      ]
+    },
+    {
+      "DayType": {
+        "DayTypeDescription": "Sabato",
+        "Mon": false,
+        "Tue": false,
+        "Wed": false,
+        "Thu": false,
+        "Fri": false,
+        "Sat": true,
+        "Sun": false,
+        "Hol": false
+      },
+      "Schedule": [
+        {
+          "Hour": 3,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 4,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 5,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 6,
+          "ScheduleDetail": "46  57     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 7,
+          "ScheduleDetail": "08  18  28  46     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 8,
+          "ScheduleDetail": "03  20  37  46     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 9,
+          "ScheduleDetail": "07  18  29  50     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 10,
+          "ScheduleDetail": "01  12  34  45  56     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 11,
+          "ScheduleDetail": "18  29  40     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 12,
+          "ScheduleDetail": "02  13  24  46  57     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 13,
+          "ScheduleDetail": "07  24  42  52     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 14,
+          "ScheduleDetail": "16  26  36  57     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 15,
+          "ScheduleDetail": "08  19  41  52     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 16,
+          "ScheduleDetail": "03  23  31  49     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 17,
+          "ScheduleDetail": "09  20  31  50  58     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 18,
+          "ScheduleDetail": "06  28  40  50     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 19,
+          "ScheduleDetail": "12     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 20,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 21,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 22,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 23,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 0,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 1,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 2,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        }
+      ]
+    },
+    {
+      "DayType": {
+        "DayTypeDescription": "Festivo",
+        "Mon": false,
+        "Tue": false,
+        "Wed": false,
+        "Thu": false,
+        "Fri": false,
+        "Sat": false,
+        "Sun": true,
+        "Hol": true
+      },
+      "Schedule": [
+        {
+          "Hour": 3,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 4,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 5,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 6,
+          "ScheduleDetail": "50     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 7,
+          "ScheduleDetail": "07  23  36  47  57     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 8,
+          "ScheduleDetail": "07  17  28  38  49     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 9,
+          "ScheduleDetail": "00  11  22  34  45  57     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 10,
+          "ScheduleDetail": "09  21  34  46  59     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 11,
+          "ScheduleDetail": "11  24  36  49     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 12,
+          "ScheduleDetail": "01  14  26  39  51     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 13,
+          "ScheduleDetail": "03  15  28  40  52     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 14,
+          "ScheduleDetail": "02  12  21  30  40  50     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 15,
+          "ScheduleDetail": "00  09  18  28  38  48  58     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 16,
+          "ScheduleDetail": "08  18  28  38  48  58     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 17,
+          "ScheduleDetail": "08  18  28  38  48  58     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 18,
+          "ScheduleDetail": "08  18  28  38  48     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 19,
+          "ScheduleDetail": "01     ",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 20,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 21,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 22,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 23,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 0,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 1,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        },
+        {
+          "Hour": 2,
+          "ScheduleDetail": "",
+          "NightDetail": ""
+        }
+      ]
+    }
+  ],
+  "Notes": []
+}

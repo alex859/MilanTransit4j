@@ -1,0 +1,56 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE'
+        classpath 'io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE'
+        classpath 'org.jsonschema2pojo:jsonschema2pojo-gradle-plugin:latest.integration'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jsonschema2pojo'
+
+jar {
+    baseName = 'milantransit4j'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework:spring-web'
+    compile 'com.fasterxml.jackson.core:jackson-core'
+    compile 'com.fasterxml.jackson.core:jackson-annotations'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'org.apache.commons:commons-collections4:4.0'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+jsonSchema2Pojo {
+    targetPackage = 'it.atm.json'
+    source = files("${sourceSets.main.output.resourcesDir}/json")
+    targetDirectory = file("${sourceSets.main.java.srcDirs.iterator().next()}")
+    sourceType = 'json'
+    removeOldOutput = false
+}
