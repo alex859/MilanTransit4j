@@ -61,11 +61,43 @@ public class AtmRouteImporter implements RouteImporter
 
       // save details
       // save geometry
-      final Map<Stop, Point> stopPointMap = stopsToClosestPointMap(routeDetails.getStops(), routeDetails.getGeometry().getSegments().stream()
+      final Map<Point, Stop> pointToStopMap =
+              stopsToClosestPointMap(routeDetails.getStops(), routeDetails.getGeometry().getSegments().stream()
               .flatMap(s -> s.getPoints().stream())
-              .collect(toList()));
+              .collect(toList())).entrySet().stream()
+              .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
 
-      stopPointMap.forEach((k, v) -> LOGGER.debug("({}, {}) -> ({}, {})", k.getLocation().getY(), k.getLocation().getX(), v.getY(), v.getX()));
+      for (final Segment segment : routeDetails.getGeometry().getSegments())
+      {
+         Stop lastStop = null;
+         Point lastPoint = null;
+         Double distance = 0.;
+         int i = 0;
+         for (final Point point : segment.getPoints())
+         {
+            if (lastPoint != null)
+            {
+               distance += distance(lastPoint, point);
+            }
+            lastPoint = point;
+
+            final Stop currentStop = pointToStopMap.get(point);
+            if (currentStop != null)
+            {
+               if (lastStop != null)
+               {
+                  LOGGER.info("{} -({})-> {}", lastStop.getDescription(), distance, currentStop.getDescription());
+                  distance = 0.;
+               }
+
+               lastStop = currentStop;
+            }
+
+
+
+         }
+      }
+      //pointToStopMap.forEach((k, v) -> LOGGER.debug("({}, {}) -> ({}, {})", k.getLocation().getY(), k.getLocation().getX(), v.getY(), v.getX()));
 
       routeDetails.getStops().stream()
               .filter(s -> s != null)
@@ -96,7 +128,8 @@ public class AtmRouteImporter implements RouteImporter
       return stops.parallelStream()
               .collect(toMap(
                       Function.identity(),
-                      s -> points.stream().min((p1, p2) -> distance(s, p1).compareTo(distance(s, p2))).get()));
+                      s -> points.stream().min((p1, p2) -> distance(s, p1).compareTo(distance(s, p2))).get()
+              ));
    }
 
    protected Double distance(final Stop stop, final Point point)
@@ -104,9 +137,19 @@ public class AtmRouteImporter implements RouteImporter
       return distance(stop.getLocation().getY(), point.getY(), stop.getLocation().getX(), point.getX());
    }
 
+   protected Double distance(final Stop stop1, final Stop stop2)
+   {
+      return distance(stop1.getLocation().getY(), stop2.getLocation().getY(), stop1.getLocation().getX(), stop2.getLocation().getX());
+   }
+
    protected Double distance(final Location location, final Point point)
    {
       return distance(location.getY(), point.getY(), location.getX(), point.getX());
+   }
+
+   protected Double distance(final Point point1, final Point point2)
+   {
+      return distance(point1.getY(), point2.getY(), point1.getX(), point2.getX());
    }
 
    /**
