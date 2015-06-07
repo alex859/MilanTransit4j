@@ -4,6 +4,9 @@ import it.atm.json.allRoutes.AllRoutesResponse;
 import it.atm.json.allRoutes.JourneyPattern;
 import it.atm.json.routeDetails.*;
 import it.atm.json.timetables.Timetables;
+import org.alex859.milantransit4j.model.graph.RouteSegmentRelationship;
+import org.alex859.milantransit4j.model.graph.StopNode;
+import org.alex859.milantransit4j.service.GraphPersister;
 import org.alex859.milantransit4j.service.RouteImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -28,8 +33,11 @@ public class AtmRouteImporter implements RouteImporter
 {
    private static final Logger LOGGER = LoggerFactory.getLogger(AtmRouteImporter.class);
 
+   private static final int MIN_DISTANCE_TO_LINK = 50;
+
    private String url;
    private RestTemplate restTemplate;
+   private GraphPersister graphPersister;
 
    @Override
    public void importRoute()
@@ -38,7 +46,7 @@ public class AtmRouteImporter implements RouteImporter
 
       final AllRoutesResponse allRoutesResponse = getResponse(url, AllRoutesResponse.class);
 
-      allRoutesResponse.getJourneyPatterns().stream()
+      allRoutesResponse.getJourneyPatterns().parallelStream()
               .filter(jp -> jp != null)
               .forEach(this::process);
    }
@@ -58,21 +66,17 @@ public class AtmRouteImporter implements RouteImporter
    protected void process(final RouteDetails routeDetails)
    {
       LOGGER.info("Processing route {}", routeDetails.getLine().getLineDescription());
-
-      // save details
-      // save geometry
-      final Map<Point, Stop> pointToStopMap =
-              stopsToClosestPointMap(routeDetails.getStops(), routeDetails.getGeometry().getSegments().stream()
-              .flatMap(s -> s.getPoints().stream())
-              .collect(toList())).entrySet().stream()
-              .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
+      final Map<String, Map<Point, Stop>> segmentPointToStopMap = routeDetails.getGeometry().getSegments().stream()
+              .collect(toMap(this::getSegmentKey, s ->
+                              stopsToClosestPointMap(routeDetails.getStops(), s.getPoints()))
+              );
 
       for (final Segment segment : routeDetails.getGeometry().getSegments())
       {
          Stop lastStop = null;
          Point lastPoint = null;
          Double distance = 0.;
-         int i = 0;
+         final Map<Point, Stop> pointToStopMap = segmentPointToStopMap.get(getSegmentKey(segment));
          for (final Point point : segment.getPoints())
          {
             if (lastPoint != null)
@@ -84,15 +88,20 @@ public class AtmRouteImporter implements RouteImporter
             final Stop currentStop = pointToStopMap.get(point);
             if (currentStop != null)
             {
+               // should not change that much, but we need it for junction, like to compute the correct distance
+               // between Pagano and Buonarroti
+               distance += distance(currentStop, lastPoint);
                if (lastStop != null)
                {
-                  LOGGER.info("{} -({})-> {}", lastStop.getDescription(), distance, currentStop.getDescription());
+                  LOGGER.debug("{} -({})-> {}", lastStop.getDescription(), distance, currentStop.getDescription());
+                  final StopNode lastStopNode = graphPersister.getOrCreateStopNode(lastStop, routeDetails);
+                  final StopNode currentStopNode = graphPersister.getOrCreateStopNode(currentStop, routeDetails);
+                  final RouteSegmentRelationship routeSegmentRelationship = graphPersister.createRouteSegmentRelationship(lastStopNode, currentStopNode, routeDetails, distance);
                   distance = 0.;
                }
 
                lastStop = currentStop;
             }
-
 
 
          }
@@ -104,9 +113,34 @@ public class AtmRouteImporter implements RouteImporter
               .forEach(this::process);
    }
 
+   protected StopPointDistanceWrapper findClosestPointAndDistance(final Stop stop, final List<Point> points)
+   {
+      Point closestPoint = null;
+      Double minDistance = Double.MAX_VALUE;
+
+      for (final Point point : points)
+      {
+         final Double distance = distance(stop, point);
+         if (distance < minDistance)
+         {
+            minDistance = distance;
+            closestPoint = point;
+         }
+      }
+
+      return new StopPointDistanceWrapper(stop, closestPoint, minDistance);
+   }
+
+   protected String getSegmentKey(final Segment segment)
+   {
+      final Point firstPoint = segment.getPoints().iterator().next();
+
+      return String.join("_", firstPoint.getY().toString(), firstPoint.getX().toString());
+   }
+
    protected void process(final Stop stop)
    {
-      LOGGER.info("Processing stop {}", stop.getDescription());
+      LOGGER.debug("Processing stop {}", stop.getDescription());
 
       // save details
 
@@ -120,16 +154,19 @@ public class AtmRouteImporter implements RouteImporter
 
    protected void process(final Timetables t)
    {
-      LOGGER.info("Processing TimeTables {}-{}-{}", t.getStopCode(), t.getLineCode(), t.getDirection());
+      LOGGER.debug("Processing TimeTables {}-{}-{}", t.getStopCode(), t.getLineCode(), t.getDirection());
    }
 
-   protected Map<Stop, Point> stopsToClosestPointMap(final List<Stop> stops, List<Point> points)
+   protected Map<Point, Stop> stopsToClosestPointMap(final List<Stop> stops, List<Point> points)
    {
       return stops.parallelStream()
-              .collect(toMap(
-                      Function.identity(),
-                      s -> points.stream().min((p1, p2) -> distance(s, p1).compareTo(distance(s, p2))).get()
-              ));
+              .map(s -> findClosestPointAndDistance(s, points))
+              .filter(w -> w.getDistance() < 250)
+              .collect(groupingBy(StopPointDistanceWrapper::getPoint))
+              .values().stream()
+              .map(l -> l.stream()
+                      .min((v1, v2) -> v1.getDistance().compareTo(v2.getDistance())).get())
+              .collect(toMap(StopPointDistanceWrapper::getPoint, StopPointDistanceWrapper::getStop));
    }
 
    protected Double distance(final Stop stop, final Point point)
@@ -156,14 +193,14 @@ public class AtmRouteImporter implements RouteImporter
     * Calculate distance between two points in latitude and longitude taking
     * into account height difference. If you are not interested in height
     * difference pass 0.0. Uses Haversine method as its base.
-    *
+    * <p>
     * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
     * el2 End altitude in meters
     *
     * @return Distance in Meters
     */
    protected Double distance(double lat1, double lat2, double lon1,
-                                 double lon2)
+                             double lon2)
    {
 
       final int R = 6371; // Radius of the earth
@@ -212,5 +249,49 @@ public class AtmRouteImporter implements RouteImporter
    public void setRestTemplate(final RestTemplate restTemplate)
    {
       this.restTemplate = restTemplate;
+   }
+
+   @Autowired
+   public void setGraphPersister(final GraphPersister graphPersister)
+   {
+      this.graphPersister = graphPersister;
+   }
+
+   protected static class StopPointDistanceWrapper
+   {
+      final Stop stop;
+      final Point point;
+      final Double distance;
+
+      public StopPointDistanceWrapper(final Stop stop, final Point point, final Double distance)
+      {
+         this.distance = distance;
+         this.stop = stop;
+         this.point = point;
+      }
+
+      public Double getDistance()
+      {
+         return distance;
+      }
+
+      public Point getPoint()
+      {
+         return point;
+      }
+
+      public Stop getStop()
+      {
+         return stop;
+      }
+
+      @Override
+      public String toString()
+      {
+         return "StopPointDistanceWrapper{" +
+                 "stop=" + stop.getDescription() +
+                 ", distance=" + distance +
+                 '}';
+      }
    }
 }

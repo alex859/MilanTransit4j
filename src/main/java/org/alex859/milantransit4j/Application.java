@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
+@EnableTransactionManagement
 public class Application
 {
    @Bean
@@ -20,6 +22,7 @@ public class Application
    {
       return new RestTemplate();
    }
+
    public static void main(String[] args)
    {
       SpringApplication.run(Application.class, args);
